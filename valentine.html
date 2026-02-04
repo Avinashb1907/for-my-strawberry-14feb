@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Will You Be My Valentine? ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+  overflow: hidden;
+}
+
+.card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  width: 340px;
+}
+
+h1 { color: #ff4d6d; }
+p { font-size: 18px; color: #444; min-height: 50px; }
+
+button {
+  font-size: 18px;
+  padding: 12px 25px;
+  margin: 10px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+#yes { background: #ff4d6d; color: white; }
+#no { background: #ddd; }
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+.shake { animation: shake 0.4s; }
+
+.heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 24px;
+  animation: floatUp 5s linear forwards;
+   z-index: 9999;   /* 👈 ADD THIS */
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-100vh); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- FIRST CARD -->
+<div class="card" id="mainCard">
+  <h1>Hey Amor 🍓❤️</h1>
+  <p id="message">Unta onnu kekanum chlm 🫠…</p>
+  <h2>Will you be my Valentine?💌😏</h2>
+  <button id="yes" onclick="yesClicked()">Yes 💋</button>
+  <button id="no" onclick="noClicked()">No 🤨</button>
+</div>
+
+<!-- FINAL CARD -->
+<div class="card" id="finalCard" style="display:none;">
+  <h1>EN CHELLAM 💋💕</h1>
+  <p id="line1" style="opacity:0;">You clicked YES 🥹</p>
+  <p id="line2" style="opacity:0;">Happy Valentine’s Day ❤️</p>
+  <p id="line3" style="opacity:0; font-size:22px; color:#ff4d6d;">
+    Love you ma 🍓💋💘
+  </p>
+</div>
+
+<!-- AUDIO -->
+<audio id="loveSong">
+  <source src="un_vizhigalil.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let yesScale = 1;
+let noCount = 0;
+
+const messages = [
+  "Illa Purila 🙄",
+  "Enna Thimira Han? 🤨",
+  "Thirumba thirumba no azhuthuriya nee 😲 ",
+  "Sanchanaaaaaaaaaaaaaaaaaaa 🫩",
+  "Yes Kodu Di Kullachi 🔪",
+  "Unmaiyaana Love Oda Value Theridha Unnaku 😭",
+  "Feel My Love Drlng YES Azuthi Paaren 🥺"
+];
+
+function noClicked() {
+  noCount++;
+  yesScale += 0.25;
+  document.getElementById("yes").style.transform = `scale(${yesScale})`;
+
+  const noBtn = document.getElementById("no");
+  noBtn.classList.add("shake");
+  setTimeout(() => noBtn.classList.remove("shake"), 400);
+
+  document.getElementById("message").textContent =
+    messages[Math.min(noCount - 1, messages.length - 1)];
+}
+
+function startHearts() {
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 5000);
+  }, 400);
+}
+
+function yesClicked() {
+  document.getElementById("mainCard").style.display = "none";
+  document.getElementById("finalCard").style.display = "block";
+
+  const song = document.getElementById("loveSong");
+
+// 🎵 start from your lyric timestamp
+  song.currentTime = 36;
+  song.volume = 1;
+
+// ▶️ play song (Chrome-safe)
+  song.play().catch(() => {
+    alert("Tap anywhere once to enable sound ❤️");
+  });
+
+// ⏹ stop after 107 seconds FROM START
+  setTimeout(() => {
+    song.pause();
+  }, 107000);
+
+
+  setTimeout(() => line1.style.opacity = 1, 500);
+  setTimeout(() => line2.style.opacity = 1, 1800);
+  setTimeout(() => {
+    line3.style.opacity = 1;
+    startHearts();
+  }, 3100);
+}
+</script>
+
+</body>
+</html>
+
